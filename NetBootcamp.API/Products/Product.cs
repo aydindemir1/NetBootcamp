@@ -1,4 +1,4 @@
-﻿namespace NetBootcamp.API.Models
+﻿namespace NetBootcamp.API.Products
 {
     public class Product
     {
@@ -6,7 +6,6 @@
         public string Name { get; set; } = default;
         public decimal Price { get; set; }
         public DateTime Created { get; set; } = new();
-
         public string Barcode { get; init; } = default;
     }
 }
