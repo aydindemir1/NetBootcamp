@@ -1,7 +1,18 @@
+using FluentValidation;
+using FluentValidation.AspNetCore;
+using Microsoft.EntityFrameworkCore;
 using NetBootcamp.API.Products;
+using NetBootcamp.API.Products.DTOs;
+using NetBootcamp.API.Repositories;
+using System.Reflection;
 
 var builder = WebApplication.CreateBuilder(args);
 
+builder.Services.AddDbContext<AppDbContext>(x=> 
+{
+    x.UseSqlServer(builder.Configuration.GetConnectionString("SqlServer"));
+    }
+);
 // Add services to the container.
 
 
@@ -9,15 +20,11 @@ builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
+builder.Services.AddFluentValidationAutoValidation();
+//builder.Services.AddValidatorsFromAssembly(Assembly.GetExecutingAssembly());
+builder.Services.AddValidatorsFromAssemblyContaining<ProductCreateRequestDto>();
 
-// DI ( Dependency Injection ) Container Framework
-// IoC ( Inversion Of Container ) Framework
-// Dependency Inversion / Inversion Of Control Principles
-// Dependency Injection Design Pattern
 
-// 1.AddSingleton
-// 2. AddScoped      
-// 3. AddTransient
 
 builder.Services.AddScoped<IProductService, ProductService>();
 builder.Services.AddScoped<IProductRepository, ProductRepository>();
@@ -27,12 +34,16 @@ builder.Services.AddSingleton<PriceCalculator>();
 
 var app = builder.Build();
 
-// Configure the HTTP request pipeline.
-if (app.Environment.IsDevelopment())
-{
-    app.UseSwagger();
-    app.UseSwaggerUI();
-}
+app.SeedDatabase();
+
+
+
+    // Configure the HTTP request pipeline.
+    if (app.Environment.IsDevelopment())
+    {
+        app.UseSwagger();
+        app.UseSwaggerUI();
+    }
 
 app.UseHttpsRedirection();
 

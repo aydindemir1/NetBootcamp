@@ -25,12 +25,18 @@ namespace NetBootcamp.API.Products
         // query string => baseUrl/api/products?id=1
         // root data => baseUrl/api/products/1
 
-        [HttpGet("{productId}")]
+        [HttpGet("{productId:int}")]
         public IActionResult GetById(int productId,  PriceCalculator priceCalculator)
         {
 
             return CreateActionResult(_productService.GetByIdWithCalculatedTax(productId, priceCalculator));
 
+        }
+
+        [HttpGet("page/{page:int}/pagesize/{pageSize:max(50)}")]
+        public IActionResult GetAllByPage(int page, int pageSize, [FromServices] PriceCalculator priceCalculator)
+        {
+            return CreateActionResult(_productService.GetAllByPageWithCalculatedTax(priceCalculator, page, pageSize));
         }
 
         // complex type => class, record, struct : request body as json
@@ -46,8 +52,14 @@ namespace NetBootcamp.API.Products
 
         }
 
+        [HttpPut("UpdateProductName")]
+        public IActionResult UpdateProductName(ProductNameUpdateRequestDto request)
+        {
+            return CreateActionResult(_productService.UpdateProductName(request.Id, request.Name));
+        }
+
         // PUT localhost/api/products/10
-        [HttpPut("{productId}")]
+        [HttpPut("{productId:int}")]
         public IActionResult Update(int productId, ProductUpdateRequestDto request)
         {
             return CreateActionResult(_productService.Update(productId, request));
@@ -64,7 +76,7 @@ namespace NetBootcamp.API.Products
         //}
 
 
-        [HttpDelete("{productId}")]
+        [HttpDelete("{productId:int}")]
         public IActionResult Delete(int productId)
         {
 
