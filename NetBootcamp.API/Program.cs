@@ -3,6 +3,7 @@ using FluentValidation.AspNetCore;
 using Microsoft.EntityFrameworkCore;
 using NetBootcamp.API.Products;
 using NetBootcamp.API.Products.DTOs;
+using NetBootcamp.API.Redis;
 using NetBootcamp.API.Repositories;
 using System.Reflection;
 
@@ -14,7 +15,10 @@ builder.Services.AddDbContext<AppDbContext>(x=>
     }
 );
 // Add services to the container.
-
+builder.Services.AddSingleton<RedisService>(x =>
+{
+    return new RedisService(builder.Configuration.GetConnectionString("Redis")!);
+});
 
 builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
