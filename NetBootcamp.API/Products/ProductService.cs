@@ -2,8 +2,7 @@
 using Microsoft.AspNetCore.Mvc;
 using NetBootcamp.API.DTOs;
 using NetBootcamp.API.Products.DTOs;
-using NetBootcamp.API.Redis;
-using StackExchange.Redis;
+using NetBootcamp.API.Repositories;
 using System.Collections.Immutable;
 using System.Net;
 using System.Security.Cryptography.X509Certificates;
@@ -11,7 +10,7 @@ using System.Text.Json;
 
 namespace NetBootcamp.API.Products
 {
-    public class ProductService(IProductRepository productRepository,RedisService redisService):IProductService
+    public class ProductService(IProductRepository productRepository, IUnitOfWork unitOfWork):IProductService
     {
 
         //private readonly IProductRepository productRepository;
@@ -21,19 +20,11 @@ namespace NetBootcamp.API.Products
         //    productRepository = productRepository;
         //}
 
-        private const string ProductCacheKey = "products";
-        private const string ProductCacheKeyAsList = "products list";
+       
 
         public ResponseModelDto<ImmutableList<ProductDto>> GetAllWithCalculatedTax([FromServices] PriceCalculator priceCalculator)
         {
-            if (redisService.Database.KeyExists(ProductCacheKey))
-            {
-                var productListAsJsonFromCache = redisService.Database.StringGet(ProductCacheKey);
-                
-                var productListFromCache = JsonSerializer.Deserialize<ImmutableList<ProductDto>>(productListAsJsonFromCache!);
-               
-                return ResponseModelDto<ImmutableList<ProductDto>>.Success(productListFromCache);
-            }
+           
 
 
             var productList = productRepository.GetAll().Select(product => new ProductDto(
@@ -44,25 +35,6 @@ namespace NetBootcamp.API.Products
                  )).ToImmutableList();
 
 
-            var productListAsJson = JsonSerializer.Serialize(productList);
-            redisService.Database.StringSet(ProductCacheKey, productListAsJson);
-
-            productList.ForEach(product =>
-            {
-                redisService.Database.ListLeftPush($"{ProductCacheKeyAsList}:{product.Id}", JsonSerializer.Serialize(product));
-            });
-
-            Dictionary<string, string> dictionary = new()
-            {
-                { "key1", "value1" },
-                { "key2", "value2" }
-            };
-
-            foreach (var item in dictionary)
-            {
-                var entry = new HashEntry(item.Key, item.Value);
-                redisService.Database.HashSet("hash-key", [entry]);
-            }
 
 
             //risService.Database.HashSet("hash-key", dictionary.Select(x => new HashEntry(x.Key, x.Value)).ToArray());
@@ -94,16 +66,7 @@ namespace NetBootcamp.API.Products
 
         public ResponseModelDto<ProductDto?> GetByIdWithCalculatedTax(int id, [FromServices] PriceCalculator priceCalculator)
         {
-            var customKey = $"{ProductCacheKeyAsList}:{id}";
-
-            if (redisService.Database.KeyExists(customKey))
-            {
-                var productAsJsonFromCache = redisService.Database.ListGetByIndex(customKey, 0);
-
-                var productFromCache = JsonSerializer.Deserialize<ProductDto>(productAsJsonFromCache!);
-
-                return ResponseModelDto<ProductDto?>.Success(productFromCache);
-            }
+           
 
             var hasProduct = productRepository.GetById(id);
 
@@ -112,8 +75,8 @@ namespace NetBootcamp.API.Products
                 return ResponseModelDto<ProductDto>.Fail("Ürün bulunmadı.", HttpStatusCode.NotFound);
             }
 
-            redisService.Database.ListLeftPush($"{ProductCacheKeyAsList}:{hasProduct.Id}",
-             JsonSerializer.Serialize(hasProduct));
+         
+          
 
             var newDto = new ProductDto(
                  hasProduct.Id,
@@ -127,7 +90,7 @@ namespace NetBootcamp.API.Products
 
         public ResponseModelDto<int> Create(ProductCreateRequestDto request)
         {
-            redisService.Database.KeyDelete(ProductCacheKey);
+       
 
             //var hasProduct = productRepository.IsExists(request.Name.Trim());
 
@@ -139,20 +102,23 @@ namespace NetBootcamp.API.Products
 
             var newProduct = new Product
             {
-                Id = productRepository.GetAll().Count + 1,
+                //Id = productRepository.GetAll().Count + 1,
                 Name = request.Name.Trim(),
                 Price = request.Price,
+                Stock = 10,
+                Barcode = Guid.NewGuid().ToString(),
                 Created = DateTime.Now
             };
 
             productRepository.Create(newProduct);
 
+            unitOfWork.Commit();
             return ResponseModelDto<int>.Success(newProduct.Id, HttpStatusCode.Created);
         }
 
         public ResponseModelDto<NoContent> UpdateProductName(int productId, string name)
         {
-            redisService.Database.KeyDelete(ProductCacheKey);
+           
 
             var hasProduct = productRepository.GetById(productId);
 
@@ -164,11 +130,12 @@ namespace NetBootcamp.API.Products
 
             productRepository.UpdateProductName(name, productId);
 
+            unitOfWork.Commit();
             return ResponseModelDto<NoContent>.Success(HttpStatusCode.NoContent);
         }
         public ResponseModelDto<NoContent> Update(int productId, ProductUpdateRequestDto request)
         {
-            redisService.Database.KeyDelete(ProductCacheKey);
+           
 
             var hasProduct = productRepository.GetById(productId);
 
@@ -177,23 +144,19 @@ namespace NetBootcamp.API.Products
                 return ResponseModelDto<NoContent>.Fail("Güncellemeye çalışılan ürün bulunamadı.", HttpStatusCode.NotFound);
             }
 
-            var updatedProduct = new Product
-            {
-                Id = productId,
-                Name = request.Name,
-                Price = request.Price,
-                Created = hasProduct.Created,
-            };
+            hasProduct.Name = request.Name;
+            hasProduct.Price = request.Price;
 
-            productRepository.Update(updatedProduct);
+            productRepository.Update(hasProduct);
 
+            unitOfWork.Commit();
             return ResponseModelDto<NoContent>.Success(HttpStatusCode.NoContent);
         }
 
 
         public ResponseModelDto<NoContent> Delete(int id)
         {
-            redisService.Database.KeyDelete(ProductCacheKey);
+         
 
             var hasProduct = productRepository.GetById(id);
 
@@ -204,6 +167,7 @@ namespace NetBootcamp.API.Products
 
             productRepository.Delete(id);
 
+            unitOfWork.Commit();
             return ResponseModelDto<NoContent>.Success(HttpStatusCode.NoContent);
         }
 
