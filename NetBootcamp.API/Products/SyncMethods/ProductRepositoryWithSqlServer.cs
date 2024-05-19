@@ -1,6 +1,6 @@
 ﻿using NetBootcamp.API.Repositories;
 
-namespace NetBootcamp.API.Products.AsyncMethods
+namespace NetBootcamp.API.Products.SyncMethods
 {
     public class ProductRepositoryWithSqlServer(AppDbContext context) : IProductRepository
     {

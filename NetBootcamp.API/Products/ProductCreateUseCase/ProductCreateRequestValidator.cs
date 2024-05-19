@@ -1,5 +1,6 @@
 ﻿using FluentValidation;
 using NetBootcamp.API.Products.DTOs;
+using NetBootcamp.API.Products.SyncMethods;
 
 namespace NetBootcamp.API.Products.ProductCreateUseCase
 {

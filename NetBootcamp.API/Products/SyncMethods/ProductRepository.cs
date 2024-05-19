@@ -1,6 +1,6 @@
-﻿namespace NetBootcamp.API.Products
+﻿namespace NetBootcamp.API.Products.SyncMethods
 {
-    public class ProductRepository:IProductRepository
+    public class ProductRepository : IProductRepository
     {
         private static List<Product> _products =
         [

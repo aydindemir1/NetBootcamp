@@ -2,9 +2,10 @@
 using Microsoft.AspNetCore.Mvc;
 using NetBootcamp.API.DTOs;
 using NetBootcamp.API.Products.DTOs;
+using NetBootcamp.API.Products.Helpers;
 using System.Collections.Immutable;
 
-namespace NetBootcamp.API.Products
+namespace NetBootcamp.API.Products.SyncMethods
 {
     public interface IProductService
     {
