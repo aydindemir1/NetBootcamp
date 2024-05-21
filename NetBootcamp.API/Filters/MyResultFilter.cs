@@ -1,7 +1,7 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Bootcamp.Service.Products.DTOs;
+using Bootcamp.Service.SharedDTOs;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
-using NetBootcamp.API.DTOs;
-using NetBootcamp.API.Products.DTOs;
 
 namespace NetBootcamp.API.Filters
 {

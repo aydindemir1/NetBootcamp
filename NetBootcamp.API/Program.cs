@@ -1,24 +1,19 @@
-using FluentValidation;
+using Bootcamp.Repository;
+using Bootcamp.Service;
+using Bootcamp.Service.Products.Configurations;
 using FluentValidation.AspNetCore;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using NetBootcamp.API.Filters;
-using NetBootcamp.API.Products;
-using NetBootcamp.API.Products.AsyncMethods;
-using NetBootcamp.API.Products.Configurations;
-using NetBootcamp.API.Products.DTOs;
-using NetBootcamp.API.Products.Helpers;
-using NetBootcamp.API.Products.SyncMethods;
-using NetBootcamp.API.Repositories;
 using System.Reflection;
 
 var builder = WebApplication.CreateBuilder(args);
 
-builder.Services.AddDbContext<AppDbContext>(x=> 
+builder.Services.AddDbContext<AppDbContext>(x =>
 {
-    x.UseSqlServer(builder.Configuration.GetConnectionString("SqlServer"));
-    }
-);
+    x.UseSqlServer(builder.Configuration.GetConnectionString("SqlServer"),
+        x => { x.MigrationsAssembly(typeof(RepositoryAssembly).Assembly.GetName().Name); });
+});
 // Add services to the container.
 
 builder.Services.Configure<ApiBehaviorOptions>(x =>
@@ -28,7 +23,8 @@ builder.Services.Configure<ApiBehaviorOptions>(x =>
 
 
 
-builder.Services.AddAutoMapper(Assembly.GetExecutingAssembly());
+builder.Services.AddAutoMapper(typeof(ServiceAssembly).Assembly);
+
 builder.Services.AddControllers(x=> x.Filters.Add<ValidationFilter>());
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();

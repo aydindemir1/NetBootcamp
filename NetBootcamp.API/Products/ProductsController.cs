@@ -1,9 +1,11 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using Bootcamp.Service.Products;
+using Bootcamp.Service.Products.DTOs;
+using Bootcamp.Service.Products.Helpers;
+using Bootcamp.Service.Products.ProductCreateUseCase;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using NetBootcamp.API.Controllers;
 using NetBootcamp.API.Filters;
-using NetBootcamp.API.Products.DTOs;
-using NetBootcamp.API.Products.Helpers;
 
 namespace NetBootcamp.API.Products
 {
@@ -51,7 +53,7 @@ namespace NetBootcamp.API.Products
         [HttpPost]
         public async Task<IActionResult> Create(ProductCreateRequestDto request)
         {
-            throw new Exception("db'ye gidemedi");
+           // throw new Exception("db'ye gidemedi");
             var result = await  _productService.Create(request);
 
             return CreateActionResult(result, nameof(GetById), new { productId = result.Data });            //var result = _productService.Create(request);
