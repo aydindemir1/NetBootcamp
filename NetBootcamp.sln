@@ -11,19 +11,19 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Bootcamp.Service", "Bootcam
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Bootcamp.Repository", "Bootcamp.Repository\Bootcamp.Repository.csproj", "{5BCEE1C6-AC37-4FFD-A789-8BF98831E367}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "NLayer", "NLayer", "{397B6877-071C-481E-98BB-141B20498937}"
-EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "CleanArchitecture", "CleanArchitecture", "{41A943B3-309C-4D89-9998-C5C43FC6A160}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Bootcamp.Domain", "Bootcamp.Domain\Bootcamp.Domain.csproj", "{E232D07D-9903-4F52-AABC-0D82FF902213}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Bootcamp.Domain", "Bootcamp.Domain\Bootcamp.Domain.csproj", "{E232D07D-9903-4F52-AABC-0D82FF902213}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Bootcamp.ApplicationService", "Bootcamp.ApplicationService\Bootcamp.ApplicationService.csproj", "{D295D9D1-602D-4910-8EC0-D12946C21D4A}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Bootcamp.ApplicationService", "Bootcamp.ApplicationService\Bootcamp.ApplicationService.csproj", "{D295D9D1-602D-4910-8EC0-D12946C21D4A}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Bootcamp.PersistenceRepository", "Bootcamp.PersistenceRepository\Bootcamp.PersistenceRepository.csproj", "{00CF53AC-A2F1-4F73-90E7-4A74A16E45AE}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Bootcamp.PersistenceRepository", "Bootcamp.PersistenceRepository\Bootcamp.PersistenceRepository.csproj", "{00CF53AC-A2F1-4F73-90E7-4A74A16E45AE}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Bootcamp.API", "Bootcamp.API\Bootcamp.API.csproj", "{D4FE8FBA-8DE6-4C18-9761-8778DE5A746E}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Bootcamp.API", "Bootcamp.API\Bootcamp.API.csproj", "{D4FE8FBA-8DE6-4C18-9761-8778DE5A746E}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Bootcamp.Cache", "Bootcamp.Cache\Bootcamp.Cache.csproj", "{C8391F69-FE26-479A-A8A0-58CBB38A5712}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Bootcamp.Cache", "Bootcamp.Cache\Bootcamp.Cache.csproj", "{C8391F69-FE26-479A-A8A0-58CBB38A5712}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LoggingAndMiddleware.API", "LoggingAndMiddleware.API\LoggingAndMiddleware.API.csproj", "{5E3D4CE1-F9EE-4BC3-A8A6-F243C5703A32}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -67,15 +67,15 @@ Global
 		{C8391F69-FE26-479A-A8A0-58CBB38A5712}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{C8391F69-FE26-479A-A8A0-58CBB38A5712}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{C8391F69-FE26-479A-A8A0-58CBB38A5712}.Release|Any CPU.Build.0 = Release|Any CPU
+		{5E3D4CE1-F9EE-4BC3-A8A6-F243C5703A32}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5E3D4CE1-F9EE-4BC3-A8A6-F243C5703A32}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5E3D4CE1-F9EE-4BC3-A8A6-F243C5703A32}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5E3D4CE1-F9EE-4BC3-A8A6-F243C5703A32}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
-		{C5C4C08D-FED7-4C68-89B5-E8736616C812} = {397B6877-071C-481E-98BB-141B20498937}
-		{DFC34033-4340-487B-8343-1B4EC1D650F3} = {397B6877-071C-481E-98BB-141B20498937}
-		{579AC224-8B00-4C94-8774-8AABABF232DE} = {397B6877-071C-481E-98BB-141B20498937}
-		{5BCEE1C6-AC37-4FFD-A789-8BF98831E367} = {397B6877-071C-481E-98BB-141B20498937}
 		{E232D07D-9903-4F52-AABC-0D82FF902213} = {41A943B3-309C-4D89-9998-C5C43FC6A160}
 		{D295D9D1-602D-4910-8EC0-D12946C21D4A} = {41A943B3-309C-4D89-9998-C5C43FC6A160}
 		{00CF53AC-A2F1-4F73-90E7-4A74A16E45AE} = {41A943B3-309C-4D89-9998-C5C43FC6A160}
