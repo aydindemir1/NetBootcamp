@@ -22,7 +22,7 @@ namespace NetBootcamp.API.Products
         [HttpGet]
         public async Task<IActionResult> GetAll(PriceCalculator priceCalculator )
         {
-            throw new Exception("db hatası");
+            //throw new CriticalException("db hatası");
             return Ok( await _productService.GetAllWithCalculatedTax(priceCalculator));
         }
 
