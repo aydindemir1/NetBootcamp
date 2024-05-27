@@ -5,6 +5,7 @@
         public string Name { get; set; } = default;
         public decimal Price { get; set; }
         public DateTime Created { get; set; } = new();
+        //[Index("Barcode")]
         public string Barcode { get; init; } = default!;
         public int Stock { get; set; }
 

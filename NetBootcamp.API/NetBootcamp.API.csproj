@@ -23,8 +23,4 @@
     <ProjectReference Include="..\Bootcamp.Service\Bootcamp.Service.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="NewFolder\" />
-  </ItemGroup>
-
 </Project>
