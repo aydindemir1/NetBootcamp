@@ -1,5 +1,5 @@
 # NetBootcamp
-Projemizde uygulamalı olarak birçok best pratiği .NET CORE API üzerinde uygulamalı olarak işledik. Mimari olarak NLayer mimari kullandık. Database olarak MS SQL SERVER kullandık. ORM olarak Entity Framework Core kullandık.
+Projemizde uygulamalı olarak birçok best pratiği .NET CORE API üzerinde uygulamalı olarak işledik. Mimari olarak NLayer mimari kullandık. Database olarak MS SQL SERVER kullandık. ORM olarak Entity Framework Core kullandık. Projemiz bir e ticaret sitesi nin backend uygulamasıdır.
 İşlediğimiz bazı best pratikler : 
 1. Logging
 2. Kimlik Doğrulama ve Yetkilendirme
