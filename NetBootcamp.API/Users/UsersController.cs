@@ -1,4 +1,5 @@
-﻿using Bootcamp.Service.Users;
+﻿using Bootcamp.Service.Token;
+using Bootcamp.Service.Users;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -24,6 +25,14 @@ namespace NetBootcamp.API.Users
         public async Task<IActionResult> SignIn(SignInRequestDto request)
         {
             return CreateActionResult(await userService.SignIn(request));
+        }
+
+        [HttpPost("SignInByRefreshToken")]
+        public async Task<IActionResult> SignInByRefreshToken(SigninByRefreshTokenRequestDto request)
+        {
+            var refreshToken = Request.Cookies["refreshToken"];
+            var response = await userService.SignInByRefreshToken(request);
+            return CreateActionResult(response);
         }
     }
 }

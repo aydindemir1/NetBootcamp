@@ -11,7 +11,8 @@ namespace Bootcamp.Web.Users
 {
     public class UserService(HttpClient client,
         IHttpContextAccessor contextAccessor,
-        IDataProtectionProvider iDataProtectionProvider)
+        IDataProtectionProvider iDataProtectionProvider,
+        ILogger<UserService> logger)
     {
         public async Task<ServiceResponseModel<NoContent>> Signin(SigninViewModel signinViewModel)
         {
@@ -51,7 +52,7 @@ namespace Bootcamp.Web.Users
             authenticationTokenList.Add(new AuthenticationToken()
             {
                 Name = OpenIdConnectParameterNames.RefreshToken,
-                Value = "custom refresh token"
+                Value = responseBody!.Data!.RefreshToken
             });
 
             var authenticationProperties = new AuthenticationProperties();
@@ -62,15 +63,36 @@ namespace Bootcamp.Web.Users
             await contextAccessor.HttpContext!.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme,
                 claimsPrincipal, authenticationProperties);
 
-            var dataProtector = iDataProtectionProvider.CreateProtector("abc");
+            //var dataProtector = iDataProtectionProvider.CreateProtector("abc");
 
-            var readAsEncrypt = dataProtector.Protect("red");
+            //var readAsEncrypt = dataProtector.Protect("red");
 
-            contextAccessor.HttpContext.Response.Cookies.Append("bgcolor", readAsEncrypt);
+            //contextAccessor.HttpContext.Response.Cookies.Append("bgcolor", readAsEncrypt);
 
             return ServiceResponseModel<NoContent>.Success();
 
 
+        }
+
+        public async Task RevokeRefreshToken()
+        {
+            var refreshToken =
+                await contextAccessor!.HttpContext!.GetTokenAsync(OpenIdConnectParameterNames.RefreshToken);
+
+
+            var response = await client.PostAsync($"/api/Tokens/RevokeRefreshToken/{refreshToken}", null);
+
+
+            if (!response.IsSuccessStatusCode)
+            {
+                var responseAsBody = await response.Content.ReadFromJsonAsync<ResponseModelDto<NoContent>>();
+
+
+                foreach (var failMessage in responseAsBody.FailMessages)
+                {
+                    logger.LogError(failMessage);
+                }
+            }
         }
     }
 }

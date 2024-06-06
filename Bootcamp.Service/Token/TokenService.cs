@@ -1,4 +1,6 @@
-﻿using Bootcamp.Service.SharedDTOs;
+﻿using Bootcamp.Repository.Tokens;
+using Bootcamp.Repository;
+using Bootcamp.Service.SharedDTOs;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 using System;
@@ -9,6 +11,9 @@ using System.Net;
 using System.Security.Claims;
 using System.Text;
 using System.Threading.Tasks;
+using Bootcamp.Service.Users;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.AspNetCore.Http.HttpResults;
 
 namespace Bootcamp.Service.Token
 {
@@ -16,9 +21,15 @@ namespace Bootcamp.Service.Token
     public interface ITokenService
     {
         Task<ResponseModelDto<TokenResponseDto>> CreateClientAccessToken(GetAccessTokenRequestDto request);
+        Task<ResponseModelDto<NoContent>> RevokeRefreshToken(Guid code);
     }
     // Token ürettiğimiz yer.
-    public class TokenService(IOptions<CustomTokenOptions> tokenOptions, IOptions<Clients> clients):ITokenService
+    public class TokenService(
+        IOptions<CustomTokenOptions> tokenOptions,
+        IOptions<Clients> clients,
+        IGenericRepository<RefreshToken> refreshTokenRepository,
+        IUnitOfWork unitOfWork,
+        UserService userService) :ITokenService
     {
         public  Task<ResponseModelDto<TokenResponseDto>> CreateClientAccessToken(GetAccessTokenRequestDto request)
         {
@@ -51,8 +62,31 @@ namespace Bootcamp.Service.Token
 
             var token = handler.WriteToken(jwtToken);
 
-            return Task.FromResult(ResponseModelDto<TokenResponseDto>.Success(new TokenResponseDto(token)));
+            return Task.FromResult(ResponseModelDto<TokenResponseDto>.Success(new TokenResponseDto(token, string.Empty)));
 
         }
+
+        public async Task<ResponseModelDto<NoContent>> RevokeRefreshToken(Guid code)
+        {
+            var hasRefreshToken = await refreshTokenRepository.Where(x => x.Code == code).SingleOrDefaultAsync();
+
+
+            if (hasRefreshToken is null)
+            {
+                return ResponseModelDto<NoContent>.Fail("Refresh token not found");
+            }
+
+
+            await refreshTokenRepository.Delete(hasRefreshToken.Id);
+            await unitOfWork.CommitAsync();
+
+
+            return ResponseModelDto<NoContent>.Success();
+        }
+
+
+
+
+
     }
 }

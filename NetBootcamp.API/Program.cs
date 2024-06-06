@@ -14,6 +14,7 @@ using NetBootcamp.API.Extensions;
 using NetBootcamp.API.Filters;
 using System.Reflection;
 using System.Text;
+using System.Threading.Channels;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -25,6 +26,10 @@ builder.Services.AddSwaggerGen();
 builder.Services.AddRepository(builder.Configuration);
 builder.Services.AddService(builder.Configuration);
 builder.Services.AddScoped<IAuthorizationHandler, OverAgeRequirementHandler>();
+
+builder.Services.AddSingleton(Channel.CreateUnbounded<UserCreatedEvent>());
+
+builder.Services.AddHostedService<BackgroundServiceEmailSender>();
 
 builder.Services.AddAuthorization(x =>
 {

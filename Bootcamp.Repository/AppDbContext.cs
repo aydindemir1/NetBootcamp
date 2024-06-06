@@ -1,6 +1,7 @@
 ﻿using Bootcamp.Repository.Categories;
 using Bootcamp.Repository.Identities;
 using Bootcamp.Repository.Products;
+using Bootcamp.Repository.Tokens;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata;
@@ -21,6 +22,7 @@ namespace Bootcamp.Repository
             base.OnConfiguring(optionsBuilder);
         }
 
+        public DbSet<RefreshToken> RefreshTokens { get; set; }
         public DbSet<Product> Products { get; set; }
         public DbSet<Category> Categories { get; set; }
 

@@ -13,9 +13,10 @@ using Microsoft.AspNetCore.DataProtection;
 namespace Bootcamp.Web.Controllers
 {
     public class HomeController(ILogger<HomeController> logger,
-        WeatherService weatherService, 
+        WeatherService weatherService,
         UserService userService,
-         IDataProtectionProvider dataProtectionProvider) : Controller
+        IDataProtectionProvider dataProtectionProvider,
+        TokenService tokenService) : Controller
     {
         private readonly ILogger<HomeController> _logger = logger;
 
@@ -67,7 +68,7 @@ namespace Bootcamp.Web.Controllers
         public async Task<IActionResult> SignOut()
         {
             await HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
-            //await userService.RevokeRefreshToken();
+            await userService.RevokeRefreshToken();
             return RedirectToAction(nameof(HomeController.Index));
         }
 

@@ -44,6 +44,12 @@ namespace Bootcamp.Repository
             return list.AsReadOnly();
         }
 
+        public IQueryable<T> Where(Expression<Func<T, bool>> predicate)
+        {
+            //Expression<Func<T, bool>> predicate
+
+            return DbSet.Where(predicate);
+        }
         public async Task<T?> GetById(int id)
         {
             var result = await DbSet.FindAsync(id);
