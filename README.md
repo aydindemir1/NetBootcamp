@@ -17,3 +17,27 @@ Projemizde uygulamalı olarak birçok best pratiği .NET CORE API üzerinde uygu
 14. Use DTOs ( Data Transfer Objects )
 15. RESTful Api Design
 16. Mesaj Kuyruğu ve Olay Tabanlı Mimari
+
+✅ Getting Started with .NET Core
+✅ Introduction to RESTful APIs
+✅ Building Your First Web API
+✅ Introduction to Asynchronous Programming
+✅ Model Validation and Data Annotations
+✅ Introduction to Filters
+✅ Introduction to Middleware
+✅ Introduction to EF Core
+✅ Working with Data in ASP.NET Core
+✅ Error Handling and Logging
+✅ Authentication and Authorization
+✅ API Versioning and Documentation
+✅ API Versioning Strategies
+✅ Background Tasks and Scheduled Jobs
+✅ Working with File Uploads
+✅ Asp.Net Core Best Practices
+✅ Asp.Net Core Publishing
+✅ Redis
+✅ NLayer Architecture
+✅ Clean Architecture
+✅ Onion Architecture
+✅ Hexagonal Architecture
+✅ Unit Test
